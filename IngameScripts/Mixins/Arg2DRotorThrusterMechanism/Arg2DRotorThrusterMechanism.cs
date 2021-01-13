@@ -295,14 +295,15 @@ namespace IngameScript
                 /// </summary>
                 /// <param name="powerOverridePercentage">The value (at or between 0 and 1) the thrusters should be overridden with.</param>
                 /// <param name="rotateToDefaultOnZero">If set to true, the rotor will be rotated to the default angle when the override percentage is 0.</param>
-                public void OverrideAllThrusters(float powerOverridePercentage, bool rotateToDefaultOnZero = false)
+                /// <param name="shareInertiaTensors">Whether or not to share inertia tensors between rotations.</param>
+                public void OverrideAllThrusters(float powerOverridePercentage, bool rotateToDefaultOnZero = false, bool shareInertiaTensors=false)
                 {
                     foreach (var RTG in rotorThrusterGroups)
                     {
                         OverrideRotorThrusterGroupThrusters(RTG, powerOverridePercentage);
                         if (powerOverridePercentage == 0 && rotateToDefaultOnZero)
                         {
-                            RTG.Stator.RotateToAngle(RTG.DefaultAngle);
+                            RTG.Stator.RotateToAngle(shareInertiaTensors, RTG.DefaultAngle);
                         }
                     }
                 }
@@ -594,6 +595,8 @@ namespace IngameScript
 
                 public RotorThrusterCollection(Base6Directions.Direction headingAt0, Base6Directions.Direction headingAt90)
                 {
+                    rotorThrusterGroups = new List<RotorThrusterGroup>();
+
                     HeadingAt0 = headingAt0;
                     HeadingAt90 = headingAt90;
 
@@ -806,6 +809,10 @@ namespace IngameScript
             /// </summary>
             public void ClearRotorThrusterGroups()
             {
+                foreach (var rtgc in rotorThrusterCollections)
+                {
+                    rtgc.Clear();
+                }
                 rotorThrusterCollections.Clear();
             }
 
@@ -817,7 +824,7 @@ namespace IngameScript
             {
                 foreach (var rt in rotorThrusterCollections)
                 {
-                    rt.OverrideAllThrusters(powerOverridePercentage * ThrustStrengthMultiplier, RotateToDefaultWhenUnused);
+                    rt.OverrideAllThrusters(powerOverridePercentage * ThrustStrengthMultiplier, RotateToDefaultWhenUnused, ShareInertiaTensor);
                 }
             }
 
@@ -842,7 +849,7 @@ namespace IngameScript
             {
                 foreach (var rt in rotorThrusterCollections)
                 {
-                    rt.Thrust(movementIndicator, axisWeights, ThrustStrengthMultiplier);
+                    rt.Thrust(movementIndicator, axisWeights, ThrustStrengthMultiplier,RotateToDefaultWhenUnused, ShareInertiaTensor);
                 }
             }
 
@@ -854,7 +861,7 @@ namespace IngameScript
             {
                 foreach (var rt in rotorThrusterCollections)
                 {
-                    rt.Thrust(shipController, ThrustStrengthMultiplier, ThrustStrengthMin, ProportionalVelocityThreshold, !ForceDisableDampeners && (shipController.DampenersOverride || ForceEnableDampeners), DampenerActivationVelocityThreshold);
+                    rt.Thrust(shipController, ThrustStrengthMultiplier, ThrustStrengthMin, ProportionalVelocityThreshold, !ForceDisableDampeners && (shipController.DampenersOverride || ForceEnableDampeners), DampenerActivationVelocityThreshold,RotateToDefaultWhenUnused, ShareInertiaTensor);
                 }
             }
 

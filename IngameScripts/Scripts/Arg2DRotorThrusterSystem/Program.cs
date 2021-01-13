@@ -247,7 +247,8 @@ namespace IngameScript
         #endregion
 
 
-        List<Arg2DRotorThrusterMechanism> tempMechanisms = new List<Arg2DRotorThrusterMechanism>();
+        Arg2DRotorThrusterMechanism mechanismTemp;
+        IMyShipController lastUsedController;
         public Program()
         {
             Initialize();
@@ -269,11 +270,8 @@ namespace IngameScript
                 tp.WriteText("");
             }
 
-            //TODO remove
-            foreach (var rtg in rotorThrusterGroups.FieldValues)
-            {
-                tempMechanisms.Add(new Arg2DRotorThrusterMechanism(new List<Arg2DRotorThrusterMechanism.RotorThrusterGroup>(new Arg2DRotorThrusterMechanism.RotorThrusterGroup[] { rtg }), rtg.HeadingAt0, rtg.HeadingAt90,true));
-            }
+            mechanismTemp = new Arg2DRotorThrusterMechanism(rotorThrusterGroups.FieldValues,rotateToDefaultWhenUnused: true, shareInertiaTensors: false);
+            lastUsedController = controllers.FieldValues.MaxBy(c => c.Priority).ShipController;
 
             Runtime.UpdateFrequency |= UpdateFrequency.Update10;
         }
@@ -297,19 +295,9 @@ namespace IngameScript
             IMyShipController controller = controllers.FieldValues.Where(c => !Vector3.IsZero(c.ShipController.MoveIndicator)).OrderByDescending(c => c.Priority).FirstOrDefault().ShipController;
             if (controller!=null)
             {
-                foreach (var mechanism in tempMechanisms)
-                {
-                    mechanism.Thrust(controller);
-                }
+                lastUsedController = controller;
             }
-            else
-            {
-                controller = controllers.FieldValues.MaxBy(c => c.Priority).ShipController;
-                foreach (var mechanism in tempMechanisms)
-                {
-                    mechanism.Thrust(controller);
-                }
-            }
+            mechanismTemp.Thrust(lastUsedController);
             //Debug end TODO REMOVE
 
             // Stop if the system has no valid ID
@@ -318,6 +306,13 @@ namespace IngameScript
                 Runtime.UpdateFrequency = UpdateFrequency.None;
                 return;
             }
+
+            foreach (var tp in textPanels.FieldValues)
+            {
+                tp.WriteText("");
+            }
+            Log($"Chain depth: {Runtime.CurrentCallChainDepth}/{Runtime.MaxCallChainDepth} ({Math.Round(100*(float)Runtime.CurrentCallChainDepth/Runtime.MaxCallChainDepth,2)})\n");
+            Log($"Instruction count: {Runtime.CurrentInstructionCount}/{Runtime.MaxInstructionCount} ({Math.Round(100 * (float)Runtime.CurrentInstructionCount / Runtime.MaxInstructionCount, 2)})\n");
         }
 
         void Initialize()
