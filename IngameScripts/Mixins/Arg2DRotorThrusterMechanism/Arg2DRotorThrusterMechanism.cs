@@ -26,6 +26,8 @@ namespace IngameScript
         /// </summary>
         public class Arg2DRotorThrusterMechanism
         {
+            #region Subclasses
+
             /// <summary>
             /// A rotor (stator) and the thrusters it is intended to rotate to appropriate directions.
             /// </summary>
@@ -74,6 +76,8 @@ namespace IngameScript
                     HeadingAt90 = headingAt90;
                 }
             }
+
+            #endregion
 
             /// <summary>
             /// Get the axis this rotor thruster is rotating on.
