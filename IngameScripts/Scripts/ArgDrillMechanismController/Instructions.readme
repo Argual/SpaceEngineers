@@ -1,0 +1,148 @@
+﻿
+R e a d m e
+-----------
+
+This script allows the user to create and control a
+continuouly extending drill mechanism.
+
+The mechanism:
+  The mechanism must have some pistons, some drills and one rotor, and an optional amount of LCD panels.
+    Pistons:
+      Pistons must either extend on axis or retract on axis, meaning that f.e. on a planet the piston must either extend or retract vertically (go up or go down).
+
+      Current limitations:
+        All pistons must be the same length.
+
+    Rotor:
+      There must be exactly one rotor which can rotate continously without limits.
+      Set the rotor velocity so that after one rotation the drill can safely extend one step.
+
+    Drills:
+      There must be at least one drill.
+
+    LCD panels:
+      LCD panels are optional. The panels will be showing status updates from the drill mechanism.
+
+      Current limitation:
+        Only blocks deriving from the 'IMyTextPanel' class can be used.
+
+    Client programmable blocks:
+      Client programmable blocks are optional.
+      They are programmable blocks other than the programmable block running the script.
+      Every time the script is run, it will run all client programmable blocks' script with an argument containing various information.
+      This information also follows the INI format.
+        The available information ([section]/[key]:
+
+          MechanismInfo/Activity:
+            The current activity of the mechanism.
+            Possible values of type 'string':
+              "None"       : The mechanism has not been initialized.
+              "Drilling"   : The mechanism is currently drilling.
+              "Stopped"    : The mechanism is currently stopped.
+              "Retracting" : The mechanism is currently retracting.
+
+          MechanismInfo/CurrentPosition:
+            The current position of the mechanism in meters.
+            Type: 'float'.
+
+          MechanismInfo/HighestPosition:
+            The maximum extension length of the mechanism in meters,
+            Type: 'float'.
+
+          MechanismInfo/DrillInventoryFillRatio:
+            The ratio describing how filled are the inventories of drills.
+            Value '0' means that all drills are empty, value '1' means that all drills are full.
+            This value only gets updated when the scheduled check is run while drilling.
+            Type: 'float'.
+
+          GeneralInfo/MessageHistory:
+            The status message history of the mechanism, separated by newlines, oldest first, newest last.
+            Type: 'string'.
+
+      Current limitation:
+        Client programmable blocks must have their custom data in INI format.
+
+
+Configuration:
+  The mechanism blocks are found through their custom data.
+  Configurations are following the INI format.
+  Upon encountering invalid custom data with the 'ArgDrillMechanism' section (sections are sorrounded with '[]'), the custom data is replaced with a valid template.
+    This allows easy setup, as one can simply write '[ArgDrillMechanism]' in each block's custom data, run the script, and then fill out the generated templates on said blocks.
+    Most fields also have comments (comments start with ';') to explain what they do.
+
+  All blocks:
+    Must contain a section named 'ArgDrillMechanism'.
+    Must contain a field named 'ID' with a string value for the ID the script is controlling.
+      This ID must be the same for all blocks of the mechanism. This is so one grid can have multiple drill mechanisms.
+
+    Example:
+      [ArgDrillMechanism]
+      ID=MyDrillMechanismID
+
+  Pistons:
+    Pistons must have an additional field under the section 'ArgDrillMechanism' called 'ExtendsWhileDrilling' with a boolean value.
+      The above field must have the value 'True' if the piston is extending on the axis to extend the mechanism, false otherwise.
+      So f.e. on a planet, the pistons facing towards the ground extend on axis, the ones facing towards the sky are retracting on axis.
+
+    Example:
+      [ArgDrillMechanism]
+      ID=MyDrillMechanismID
+      ExtendingOnAxis=True
+
+  Host Programmable Block:
+    The Programmable Block hosting the script can also be configured using the custom data.
+    The custom data is refreshed every time the script is recompiled, saved, loaded or one of the fields changed.
+    It is advised to shut down the drill and wait for it to completely retract before editing the custom data.
+
+  Client Programmable Blocks:
+    Client programmable blocks must have an additional field under the section 'ArgDrillMechanism' called 'IsClient' with the value 'True'.
+    Client programmable blocks must have their custom data in INI format.
+    Other sections and options won't be overwritten.
+
+    Example:
+      [ArgDrillMechanism]
+      ID=MyDrillMechanismID
+      IsClient=True
+
+First time setup:
+    Place the necessary blocks.
+    Configure them via their custom data.
+    Recompile the script (it will fail, because it lacks DrillMechanismID).
+    Configure the DrillMechanismID via 'Configure DrillMechanismID [your id]' or 'ConfigureFromCustomData'.
+    Recompile the script.
+
+Operation:
+  Operation can be done by running the script with commands as argument.
+  Only one command can be given at a time.
+  
+  Commands:
+    The commands must be entered without the sorrounding "".
+
+    "Stop" :
+      Stops drilling.
+
+    "Start" :
+      Starts or resumes drilling.
+
+    "ShutDown" :
+      Stops drilling and retracts the drill mechanism.
+
+    "ResetToDefaults" :
+      Resets ecerything to default.
+
+    "ConfigureFromCustomData" :
+      Updates properties from the Programmable Block's custom data.
+
+    "GetBlocks" :
+      Reexplores the grid to collect all blocks.
+
+    "UpdateIDs" :
+      Updates the drill mechanism ID of all controlled blocks.
+
+    "Configure [property] [new value]" :
+      Assigns a new value to the specified property.
+      [property]  : The name of the property.
+      [new value] : The new value of the property.
+
+    
+                
