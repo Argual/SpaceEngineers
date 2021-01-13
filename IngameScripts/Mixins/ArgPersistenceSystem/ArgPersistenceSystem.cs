@@ -113,12 +113,12 @@ namespace IngameScript
                     /// <summary>
                     /// This method will be called if the reading of this field is succesful.
                     /// </summary>
-                    public Action ActionOnReadSuccess { get; set; }
+                    public Action ActionOnGetSuccess { get; set; }
 
                     /// <summary>
                     /// This method will be called if the reading of this field fails.
                     /// </summary>
-                    public Action ActionOnReadFail { get; set; }
+                    public Action ActionOnGetFail { get; set; }
 
                     /// <summary>
                     /// The key for the field.
@@ -148,15 +148,15 @@ namespace IngameScript
                     /// <param name="fieldSection">The name of the section this field belongs to.</param>
                     /// <param name="fieldName">The name of the field.</param>
                     /// <param name="fieldComment">The comment for this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public Field(string fieldSection, string fieldName, string fieldComment, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public Field(string fieldSection, string fieldName, string fieldComment, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
                     {
                         FieldSection = fieldSection;
                         FieldName = fieldName;
                         FieldComment = fieldComment;
-                        ActionOnReadFail = actionOnReadFail;
-                        ActionOnReadSuccess = actionOnReadSuccess;
+                        ActionOnGetFail = actionOnGetFail;
+                        ActionOnGetSuccess = actionOnGetSuccess;
                         PullPriority = 0;
                     }
                     #endregion
@@ -181,7 +181,7 @@ namespace IngameScript
                     /// Sets the field's values to an ini.
                     /// </summary>
                     /// <param name="setComment">Whether or not to also set the comment.</param>
-                    public abstract void SetToIni(MyIni ini, bool setComment = true);
+                    public abstract void SetToIni(MyIni ini, bool setComment = false);
 
                     /// <summary>
                     /// Sets values to default.
@@ -213,10 +213,10 @@ namespace IngameScript
                     /// <param name="fieldSection">The name of the section this field belongs to.</param>
                     /// <param name="fieldName">The name of the field.</param>
                     /// <param name="fieldComment">The comment for this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public BlockField(string fieldSection, string fieldName, string fieldComment, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public BlockField(string fieldSection, string fieldName, string fieldComment, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, actionOnGetFail, actionOnGetSuccess) { }
 
                     #endregion
                 }
@@ -349,10 +349,10 @@ namespace IngameScript
                     /// <param name="fieldName">The name of the field.</param>
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public BlockCollectionField(string fieldSection, string fieldName, string fieldComment, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public BlockCollectionField(string fieldSection, string fieldName, string fieldComment, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, actionOnGetFail, actionOnGetSuccess)
                     {
                         Delimiter = delimiter;
                     }
@@ -376,10 +376,10 @@ namespace IngameScript
                     /// <param name="fieldSection">The name of the section this field belongs to.</param>
                     /// <param name="fieldName">The name of the field.</param>
                     /// <param name="fieldComment">The comment for this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public ValueField(string fieldSection, string fieldName, string fieldComment, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public ValueField(string fieldSection, string fieldName, string fieldComment, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, actionOnGetFail, actionOnGetSuccess) { }
                     #endregion
                 }
 
@@ -424,10 +424,10 @@ namespace IngameScript
                     /// <param name="fieldName">The name of the field.</param>
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public ValueCollectionField(string fieldSection, string fieldName, string fieldComment, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public ValueCollectionField(string fieldSection, string fieldName, string fieldComment, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, actionOnGetFail, actionOnGetSuccess)
                     {
                         Delimiter = delimiter;
                     }
@@ -548,10 +548,10 @@ namespace IngameScript
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
                     /// <param name="fromStringParser">The function used to parse a string to the type of the value.</param>
                     /// <param name="toStringConverter">The function used to parse the value of this field to string.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public GenericValueField(string fieldSection, string fieldName, string fieldComment, T fieldValue, T fieldDefaultValue, Parser<string, T, bool> fromStringParser, Func<T, string> toStringConverter, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public GenericValueField(string fieldSection, string fieldName, string fieldComment, T fieldValue, T fieldDefaultValue, Parser<string, T, bool> fromStringParser, Func<T, string> toStringConverter, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, actionOnGetFail, actionOnGetSuccess)
                     {
                         FieldValue = fieldValue;
                         FieldDefaultValue = fieldDefaultValue;
@@ -568,7 +568,7 @@ namespace IngameScript
                     /// <para>The field keeps its original value, if this fails.</para>
                     /// </summary>
                     /// <remarks>
-                    /// This will invoke '<see cref="Field.ActionOnReadSuccess"/>' or '<see cref="Field.ActionOnReadFail"/>' depending on success.
+                    /// This will invoke '<see cref="Field.ActionOnGetSuccess"/>' or '<see cref="Field.ActionOnGetFail"/>' depending on success.
                     /// </remarks>
                     public override bool TryGetFromIni(MyIni ini)
                     {
@@ -577,12 +577,12 @@ namespace IngameScript
                         if (ini.Get(Key).TryGetString(out s) && FromStringParser(s, out value))
                         {
                             FieldValue = value;
-                            ActionOnReadSuccess?.Invoke();
+                            ActionOnGetSuccess?.Invoke();
                             return true;
                         }
                         else
                         {
-                            ActionOnReadFail?.Invoke();
+                            ActionOnGetFail?.Invoke();
                             return false;
                         }
                     }
@@ -591,7 +591,7 @@ namespace IngameScript
                     /// Sets this field's value to the given ini.
                     /// </summary>
                     /// <param name="setComment">Whether or not to also set the comment.</param>
-                    public override void SetToIni(MyIni ini, bool setComment = true)
+                    public override void SetToIni(MyIni ini, bool setComment = false)
                     {
                         if (FieldValue == null)
                         {
@@ -751,10 +751,10 @@ namespace IngameScript
                     /// <param name="fromStringParser">The function used to parse a string to the type of the value.</param>
                     /// <param name="toStringConverter">The function used to parse the value of this field to string.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public GenericValueCollectionField(string fieldSection, string fieldName, string fieldComment, List<T> fieldValues, List<T> fieldDefaultValues, Parser<string, T, bool> fromStringParser, Func<T, string> toStringConverter, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, delimiter, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public GenericValueCollectionField(string fieldSection, string fieldName, string fieldComment, List<T> fieldValues, List<T> fieldDefaultValues, Parser<string, T, bool> fromStringParser, Func<T, string> toStringConverter, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, delimiter, actionOnGetFail, actionOnGetSuccess)
                     {
                         FieldValues = fieldValues;
                         FieldDefaultValues = fieldDefaultValues;
@@ -769,7 +769,7 @@ namespace IngameScript
                     /// <para>The field resets values to default if it fails.</para>
                     /// </summary>
                     /// <remarks>
-                    /// This will invoke '<see cref="Field.ActionOnReadSuccess"/>' or '<see cref="Field.ActionOnReadFail"/>' depending on success.
+                    /// This will invoke '<see cref="Field.ActionOnGetSuccess"/>' or '<see cref="Field.ActionOnGetFail"/>' depending on success.
                     /// </remarks>
                     public override bool TryGetFromIni(MyIni ini)
                     {
@@ -796,13 +796,13 @@ namespace IngameScript
                         }
                         if (success)
                         {
-                            ActionOnReadSuccess?.Invoke();
+                            ActionOnGetSuccess?.Invoke();
                         }
                         else
                         {
                             FieldValues.Clear();
                             FieldValues.AddRange(FieldDefaultValues);
-                            ActionOnReadFail?.Invoke();
+                            ActionOnGetFail?.Invoke();
                         }
                         return success;
                     }
@@ -811,7 +811,7 @@ namespace IngameScript
                     /// Sets this field's values to the given ini. Null values result in empty strings.
                     /// </summary>
                     /// <param name="setComment">Whether or not to also set the comment.</param>
-                    public override void SetToIni(MyIni ini, bool setComment = true)
+                    public override void SetToIni(MyIni ini, bool setComment = false)
                     {
                         string valueStrings = "";
                         T v;
@@ -925,10 +925,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public BlockField(string fieldSection, string fieldName, string fieldComment="", T fieldValue=default(T), T fieldDefaultValue=default(T), Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public BlockField(string fieldSection, string fieldName, string fieldComment="", T fieldValue=default(T), T fieldDefaultValue=default(T), Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, actionOnGetFail, actionOnGetSuccess)
                     {
                         FieldValue = fieldValue;
                         FieldDefaultValue = fieldDefaultValue;
@@ -943,7 +943,7 @@ namespace IngameScript
                     /// <para>The field keeps its original value, if this fails.</para>
                     /// </summary>
                     /// <remarks>
-                    /// This will invoke '<see cref="Field.ActionOnReadSuccess"/>' or '<see cref="Field.ActionOnReadFail"/>' depending on success.
+                    /// This will invoke '<see cref="Field.ActionOnGetSuccess"/>' or '<see cref="Field.ActionOnGetFail"/>' depending on success.
                     /// </remarks>
                     public override bool TryGetFromIni(MyIni ini, IMyGridTerminalSystem gridTerminalSystem)
                     {
@@ -953,19 +953,19 @@ namespace IngameScript
                             T block = gridTerminalSystem.GetBlockWithId(id) as T;
                             if (block == default(IMyTerminalBlock))
                             {
-                                ActionOnReadFail?.Invoke();
+                                ActionOnGetFail?.Invoke();
                                 return false;
                             }
                             else
                             {
                                 FieldValue = block;
-                                ActionOnReadSuccess?.Invoke();
+                                ActionOnGetSuccess?.Invoke();
                                 return true;
                             }
                         }
                         else
                         {
-                            ActionOnReadFail?.Invoke();
+                            ActionOnGetFail?.Invoke();
                             return false;
                         }
                     }
@@ -974,7 +974,7 @@ namespace IngameScript
                     /// Sets this field's value to the given ini.
                     /// </summary>
                     /// <param name="setComment">Whether or not to also set the comment.</param>
-                    public override void SetToIni(MyIni ini, bool setComment = true)
+                    public override void SetToIni(MyIni ini, bool setComment = false)
                     {
                         if (FieldValue == null)
                         {
@@ -1081,10 +1081,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public BlockCollectionField(string fieldSection, string fieldName, string fieldComment, List<T> fieldValues, List<T> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, delimiter, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public BlockCollectionField(string fieldSection, string fieldName, string fieldComment, List<T> fieldValues, List<T> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, delimiter, actionOnGetFail, actionOnGetSuccess)
                     {
                         FieldValues = fieldValues;
                         FieldDefaultValues = fieldDefaultValues;
@@ -1121,13 +1121,13 @@ namespace IngameScript
                         }
                         if (success)
                         {
-                            ActionOnReadSuccess?.Invoke();
+                            ActionOnGetSuccess?.Invoke();
                         }
                         else
                         {
                             FieldValues.Clear();
                             FieldValues.AddRange(FieldDefaultValues);
-                            ActionOnReadFail?.Invoke();
+                            ActionOnGetFail?.Invoke();
                         }
                         return success;
                     }
@@ -1136,7 +1136,7 @@ namespace IngameScript
                     /// Sets this field's values to the given ini. Null values result in empty strings.
                     /// </summary>
                     /// <param name="setComment">Whether or not to also set the comment.</param>
-                    public override void SetToIni(MyIni ini, bool setComment = true)
+                    public override void SetToIni(MyIni ini, bool setComment = false)
                     {
                         string valueStrings = "";
                         T v;
@@ -1241,10 +1241,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public StringField(string fieldSection, string fieldName, string fieldComment, String fieldValue, String fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public StringField(string fieldSection, string fieldName, string fieldComment, String fieldValue, String fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, actionOnGetFail, actionOnGetSuccess)
                     {
                         FieldValue = fieldValue;
                         FieldDefaultValue = fieldDefaultValue;
@@ -1256,12 +1256,12 @@ namespace IngameScript
                         if (ini.Get(Key).TryGetString(out s))
                         {
                             FieldValue = s;
-                            ActionOnReadSuccess?.Invoke();
+                            ActionOnGetSuccess?.Invoke();
                             return true;
                         }
                         else
                         {
-                            ActionOnReadFail?.Invoke();
+                            ActionOnGetFail?.Invoke();
                             return false;
                         }
                     }
@@ -1364,10 +1364,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public StringCollectionField(string fieldSection, string fieldName, string fieldComment, List<String> fieldValues, List<String> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, delimiter, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public StringCollectionField(string fieldSection, string fieldName, string fieldComment, List<String> fieldValues, List<String> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, delimiter, actionOnGetFail, actionOnGetSuccess)
                     {
                         FieldValues = fieldValues;
                         FieldDefaultValues = fieldDefaultValues;
@@ -1382,7 +1382,7 @@ namespace IngameScript
                     /// <para>The field resets values to default if it fails.</para>
                     /// </summary>
                     /// <remarks>
-                    /// This will invoke '<see cref="Field.ActionOnReadSuccess"/>' or '<see cref="Field.ActionOnReadFail"/>' depending on success.
+                    /// This will invoke '<see cref="Field.ActionOnGetSuccess"/>' or '<see cref="Field.ActionOnGetFail"/>' depending on success.
                     /// </remarks>
                     public override bool TryGetFromIni(MyIni ini)
                     {
@@ -1395,14 +1395,14 @@ namespace IngameScript
                             {
                                 FieldValues.Add(valueString);
                             }
-                            ActionOnReadSuccess?.Invoke();
+                            ActionOnGetSuccess?.Invoke();
                             return true;
                         }
                         else
                         {
                             FieldValues.Clear();
                             FieldValues.AddRange(FieldDefaultValues);
-                            ActionOnReadFail?.Invoke();
+                            ActionOnGetFail?.Invoke();
                             return false;
                         }
                     }
@@ -1411,7 +1411,7 @@ namespace IngameScript
                     /// Sets this field's values to the given ini. Null values result in empty strings.
                     /// </summary>
                     /// <param name="setComment">Whether or not to also set the comment.</param>
-                    public override void SetToIni(MyIni ini, bool setComment = true)
+                    public override void SetToIni(MyIni ini, bool setComment = false)
                     {
                         string valueStrings = "";
                         string v;
@@ -1471,10 +1471,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public BooleanField(string fieldSection, string fieldName, string fieldComment, Boolean fieldValue, Boolean fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Boolean.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public BooleanField(string fieldSection, string fieldName, string fieldComment, Boolean fieldValue, Boolean fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Boolean.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1490,10 +1490,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public BooleanCollectionField(string fieldSection, string fieldName, string fieldComment, List<Boolean> fieldValues, List<Boolean> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Boolean.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess)
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public BooleanCollectionField(string fieldSection, string fieldName, string fieldComment, List<Boolean> fieldValues, List<Boolean> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Boolean.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess)
                     {}
 
                 }
@@ -1513,10 +1513,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public CharField(string fieldSection, string fieldName, string fieldComment, Char fieldValue, Char fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Char.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public CharField(string fieldSection, string fieldName, string fieldComment, Char fieldValue, Char fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Char.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
 
                 }
@@ -1533,10 +1533,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public CharCollectionField(string fieldSection, string fieldName, string fieldComment, List<Char> fieldValues, List<Char> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Char.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public CharCollectionField(string fieldSection, string fieldName, string fieldComment, List<Char> fieldValues, List<Char> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Char.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1555,10 +1555,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public SByteField(string fieldSection, string fieldName, string fieldComment, SByte fieldValue, SByte fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, SByte.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public SByteField(string fieldSection, string fieldName, string fieldComment, SByte fieldValue, SByte fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, SByte.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1574,10 +1574,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public SByteCollectionField(string fieldSection, string fieldName, string fieldComment, List<SByte> fieldValues, List<SByte> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, SByte.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public SByteCollectionField(string fieldSection, string fieldName, string fieldComment, List<SByte> fieldValues, List<SByte> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, SByte.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
 
                 }
@@ -1597,10 +1597,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public ByteField(string fieldSection, string fieldName, string fieldComment, Byte fieldValue, Byte fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Byte.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public ByteField(string fieldSection, string fieldName, string fieldComment, Byte fieldValue, Byte fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Byte.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
 
                 }
@@ -1617,10 +1617,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public ByteCollectionField(string fieldSection, string fieldName, string fieldComment, List<Byte> fieldValues, List<Byte> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Byte.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public ByteCollectionField(string fieldSection, string fieldName, string fieldComment, List<Byte> fieldValues, List<Byte> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Byte.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
 
                 }
@@ -1640,10 +1640,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public UInt16Field(string fieldSection, string fieldName, string fieldComment, UInt16 fieldValue, UInt16 fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, UInt16.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public UInt16Field(string fieldSection, string fieldName, string fieldComment, UInt16 fieldValue, UInt16 fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, UInt16.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1659,10 +1659,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public UInt16CollectionField(string fieldSection, string fieldName, string fieldComment, List<UInt16> fieldValues, List<UInt16> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, UInt16.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public UInt16CollectionField(string fieldSection, string fieldName, string fieldComment, List<UInt16> fieldValues, List<UInt16> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, UInt16.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1681,10 +1681,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public Int16Field(string fieldSection, string fieldName, string fieldComment, Int16 fieldValue, Int16 fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Int16.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public Int16Field(string fieldSection, string fieldName, string fieldComment, Int16 fieldValue, Int16 fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Int16.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1700,10 +1700,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public Int16CollectionField(string fieldSection, string fieldName, string fieldComment, List<Int16> fieldValues, List<Int16> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Int16.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public Int16CollectionField(string fieldSection, string fieldName, string fieldComment, List<Int16> fieldValues, List<Int16> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Int16.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1722,10 +1722,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public UInt32Field(string fieldSection, string fieldName, string fieldComment, UInt32 fieldValue, UInt32 fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, UInt32.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public UInt32Field(string fieldSection, string fieldName, string fieldComment, UInt32 fieldValue, UInt32 fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, UInt32.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1741,10 +1741,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public UInt32CollectionField(string fieldSection, string fieldName, string fieldComment, List<UInt32> fieldValues, List<UInt32> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, UInt32.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public UInt32CollectionField(string fieldSection, string fieldName, string fieldComment, List<UInt32> fieldValues, List<UInt32> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, UInt32.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1763,10 +1763,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public Int32Field(string fieldSection, string fieldName, string fieldComment, Int32 fieldValue, Int32 fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Int32.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public Int32Field(string fieldSection, string fieldName, string fieldComment, Int32 fieldValue, Int32 fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Int32.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1782,10 +1782,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public Int32CollectionField(string fieldSection, string fieldName, string fieldComment, List<Int32> fieldValues, List<Int32> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Int32.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public Int32CollectionField(string fieldSection, string fieldName, string fieldComment, List<Int32> fieldValues, List<Int32> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Int32.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1804,10 +1804,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public UInt64Field(string fieldSection, string fieldName, string fieldComment, UInt64 fieldValue, UInt64 fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, UInt64.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public UInt64Field(string fieldSection, string fieldName, string fieldComment, UInt64 fieldValue, UInt64 fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, UInt64.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1823,10 +1823,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public UInt64CollectionField(string fieldSection, string fieldName, string fieldComment, List<UInt64> fieldValues, List<UInt64> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, UInt64.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public UInt64CollectionField(string fieldSection, string fieldName, string fieldComment, List<UInt64> fieldValues, List<UInt64> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, UInt64.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1845,10 +1845,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public Int64Field(string fieldSection, string fieldName, string fieldComment, Int64 fieldValue, Int64 fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Int64.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public Int64Field(string fieldSection, string fieldName, string fieldComment, Int64 fieldValue, Int64 fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Int64.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1864,10 +1864,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public Int64CollectionField(string fieldSection, string fieldName, string fieldComment, List<Int64> fieldValues, List<Int64> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Int64.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public Int64CollectionField(string fieldSection, string fieldName, string fieldComment, List<Int64> fieldValues, List<Int64> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Int64.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
 
                 }
@@ -1887,10 +1887,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public SingleField(string fieldSection, string fieldName, string fieldComment, Single fieldValue, Single fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Single.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public SingleField(string fieldSection, string fieldName, string fieldComment, Single fieldValue, Single fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Single.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1906,10 +1906,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public SingleCollectionField(string fieldSection, string fieldName, string fieldComment, List<Single> fieldValues, List<Single> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Single.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public SingleCollectionField(string fieldSection, string fieldName, string fieldComment, List<Single> fieldValues, List<Single> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Single.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
 
                 }
@@ -1929,10 +1929,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public DoubleField(string fieldSection, string fieldName, string fieldComment, Double fieldValue, Double fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Double.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public DoubleField(string fieldSection, string fieldName, string fieldComment, Double fieldValue, Double fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Double.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1948,10 +1948,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public DoubleCollectionField(string fieldSection, string fieldName, string fieldComment, List<Double> fieldValues, List<Double> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Double.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public DoubleCollectionField(string fieldSection, string fieldName, string fieldComment, List<Double> fieldValues, List<Double> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Double.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1970,10 +1970,10 @@ namespace IngameScript
                     /// <param name="fieldComment">The comment for this field.</param>
                     /// <param name="fieldValue">The value of this field.</param>
                     /// <param name="fieldDefaultValue">The default value of this field.</param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public DecimalField(string fieldSection, string fieldName, string fieldComment, Decimal fieldValue, Decimal fieldDefaultValue, Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Decimal.TryParse, v => v.ToString(), actionOnReadFail, actionOnReadSuccess) { }
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public DecimalField(string fieldSection, string fieldName, string fieldComment, Decimal fieldValue, Decimal fieldDefaultValue, Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValue, fieldDefaultValue, Decimal.TryParse, v => v.ToString(), actionOnGetFail, actionOnGetSuccess) { }
 
                 }
 
@@ -1989,10 +1989,10 @@ namespace IngameScript
                     /// <param name="fieldValues">The value of this field.</param>
                     /// <param name="fieldDefaultValues">The default value of this field.</param>
                     /// <param name="delimiter"><para>The delimiter used to separate the string equivalents of the value before parsing them to the type of the value.</para><para>Note: The string equivalent of the value must not contain this delimiter, as it would result in faulty splitting.</para></param>
-                    /// <param name="actionOnReadSuccess">This method will be called if the reading of this field is succesful.</param>
-                    /// <param name="actionOnReadFail">This method will be called if the reading of this field fails.</param>
-                    public DecimalCollectionField(string fieldSection, string fieldName, string fieldComment, List<Decimal> fieldValues, List<Decimal> fieldDefaultValues, string delimiter = ",", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Decimal.TryParse, v => v.ToString(), delimiter, actionOnReadFail, actionOnReadSuccess) {}
+                    /// <param name="actionOnGetSuccess">This method will be called if the reading of this field is succesful.</param>
+                    /// <param name="actionOnGetFail">This method will be called if the reading of this field fails.</param>
+                    public DecimalCollectionField(string fieldSection, string fieldName, string fieldComment, List<Decimal> fieldValues, List<Decimal> fieldDefaultValues, string delimiter = ",", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                        : base(fieldSection, fieldName, fieldComment, fieldValues, fieldDefaultValues, Decimal.TryParse, v => v.ToString(), delimiter, actionOnGetFail, actionOnGetSuccess) {}
 
 
                 }
@@ -2012,9 +2012,6 @@ namespace IngameScript
 
             private readonly MyIni ini;
             private readonly MyIni testIni;
-
-            private Func<string> pullMethod;
-            private Action<string> pushMethod;
 
             private readonly IMyGridTerminalSystem gridTerminalSystem;
             #endregion
@@ -2070,40 +2067,17 @@ namespace IngameScript
             /// <summary>
             /// The method used to write the data to storage.
             /// </summary>
-            public Action<string> PushMethod
-            {
-                get
-                {
-                    return pushMethod;
-                }
-                set
-                {
-                    if (value == null)
-                    {
-                        throw new Exception("Push method can not be null!");
-                    }
-                    pushMethod = value;
-                }
-            }
+            public Action<string> PushMethod { get; set; }
 
             /// <summary>
             /// The function used to retrieve the data from storage.
             /// </summary>
-            public Func<string> PullMethod
-            {
-                get
-                {
-                    return pullMethod;
-                }
-                set
-                {
-                    if (value == null)
-                    {
-                        throw new Exception("Pull method can not be null!");
-                    }
-                    pullMethod = value;
-                }
-            }
+            public Func<string> PullMethod { get; set; }
+
+            /// <summary>
+            /// Whether or not to use field comments if they are available.
+            /// </summary>
+            public bool UseComments { get; set; }
 
             #endregion
 
@@ -2239,8 +2213,8 @@ namespace IngameScript
                 {
                     try
                     {
-                        field.SetToIni(testIni, true);
-                        field.SetToIni(ini, true);
+                        field.SetToIni(testIni, UseComments);
+                        field.SetToIni(ini, UseComments);
                     }
                     catch (Exception)
                     {
@@ -2265,8 +2239,8 @@ namespace IngameScript
                 {
                     try
                     {
-                        field.SetToIni(testIni, true);
-                        field.SetToIni(ini, true);
+                        field.SetToIni(testIni, UseComments);
+                        field.SetToIni(ini, UseComments);
                     }
                     catch (Exception)
                     {
@@ -2288,7 +2262,7 @@ namespace IngameScript
                 {
                     foreach (var field in AllFields)
                     {
-                        field.SetToIni(ini, true);
+                        field.SetToIni(ini, UseComments);
                     }
                     return true;
                 }
@@ -2314,7 +2288,7 @@ namespace IngameScript
                 {
                     foreach (var field in AllFields)
                     {
-                        field.SetToIni(testIni, true);
+                        field.SetToIni(testIni, UseComments);
                     }
                 }
                 catch (Exception e)
@@ -2334,12 +2308,16 @@ namespace IngameScript
             /// <para>Fields with the highest pull priority will be pulled first, fields with lowest last.</para>
             /// <para><see cref="Fields.ValueField"/>s will always be pulled before <see cref="Fields.BlockField"/>s.</para>
             /// </summary>
-            /// <param name="stopAtFirstFail"><para>Whether or not to stop at the first failed attempt to parse data to a field.</para><para>Setting this to false can be useful when '<see cref="Field.ActionOnReadFail"/>' was set to a method that can rectify such a situation.</para></param>
+            /// <param name="stopAtFirstFail"><para>Whether or not to stop at the first failed attempt to parse data to a field.</para><para>Setting this to false can be useful when '<see cref="Field.ActionOnGetFail"/>' was set to a method that can rectify such a situation.</para></param>
             /// <remarks>
             /// For a safer but slower method see '<see cref="Pull(out Exception)"/>'.
             /// </remarks>
             public bool Pull(bool stopAtFirstFail = true)
             {
+                if (PullMethod==null)
+                {
+                    throw new ArgumentNullException("Pull method is null!");
+                }
                 if (ini.TryParse(PullMethod()))
                 {
                     foreach (var field in valueFields.OrderByDescending(f => f.PullPriority))
@@ -2377,6 +2355,10 @@ namespace IngameScript
             /// <param name="exception">The exception the pull failed with, otherwise null.</param>
             public bool Pull(out Exception exception)
             {
+                if (PullMethod == null)
+                {
+                    throw new ArgumentNullException("Pull method is null!");
+                }
                 bool success = true;
                 exception = null;
                 testValueFields.Clear();
@@ -2437,6 +2419,10 @@ namespace IngameScript
             /// </remarks>
             public bool Push()
             {
+                if (PushMethod == null)
+                {
+                    throw new ArgumentNullException("Pull method is null!");
+                }
                 try
                 {
                     PushMethod(ini.ToString());
@@ -2454,6 +2440,10 @@ namespace IngameScript
             /// <param name="exception">The exception the push failed with, otherwise null.</param>
             public bool Push(out Exception exception)
             {
+                if (PushMethod == null)
+                {
+                    throw new ArgumentNullException("Pull method is null!");
+                }
                 bool success = true;
                 exception = null;
                 try
@@ -2484,10 +2474,11 @@ namespace IngameScript
             /// <summary>
             /// Instantiates a persistence system.
             /// </summary>
+            /// <param name="useComments">Whether or not to use field comments if they are available.</param>
             /// <param name="pullMethod">The method used to retrieve the data this persistence system will be handling.</param>
             /// <param name="pushMethod">The method used to push the data this persistence system is handling.</param>
             /// <param name="gridTerminalSystem">The grid terminal system with blocks to get/set from/to fields. <para>This is only required if the persistence system needs to be able to handle <see cref="Fields.BlockField"/>s.</para></param>
-            public ArgPersistenceSystem(Func<string> pullMethod, Action<string> pushMethod, IMyGridTerminalSystem gridTerminalSystem=null)
+            public ArgPersistenceSystem(bool useComments = true, Func<string> pullMethod=null, Action<string> pushMethod=null, IMyGridTerminalSystem gridTerminalSystem=null)
             {
                 ini = new MyIni();
                 testIni = new MyIni();
@@ -2500,6 +2491,8 @@ namespace IngameScript
 
                 PullMethod = pullMethod;
                 PushMethod = pushMethod;
+
+                UseComments = useComments;
 
                 this.gridTerminalSystem = gridTerminalSystem;
             }

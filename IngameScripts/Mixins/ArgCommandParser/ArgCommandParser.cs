@@ -148,12 +148,18 @@ namespace IngameScript
                 /// <param name="commandAction">The command to execute.</param>
                 /// <param name="arguments">List of the names of the arguments this command takes. Can be null if this command takes no arguments. Argument names must not contain spaces!</param>
                 /// <param name="switches">List of the switches this command can take. Can be null if this command takes no switches. Switches must not contain spaces!</param>
-                public Command(string commandName, DelegateCommand commandAction, List<string> arguments=null, List<string> switches = null)
+                public Command(string commandName, DelegateCommand commandAction, IEnumerable<string> arguments=null, IEnumerable<string> switches = null)
                 {
                     CommandName = commandName;
                     CommandAction = commandAction;
-                    Arguments = arguments;
-                    Switches = switches;
+                    if (arguments!=null)
+                    {
+                        Arguments.AddRange(arguments);
+                    }
+                    if (switches != null)
+                    {
+                        Switches.AddRange(switches);
+                    }
                 }
             }
 
@@ -184,7 +190,6 @@ namespace IngameScript
             #endregion
 
             #endregion
-
 
             #region Private fields
 

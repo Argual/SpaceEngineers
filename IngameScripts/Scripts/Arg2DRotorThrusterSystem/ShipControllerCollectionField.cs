@@ -150,13 +150,13 @@ namespace IngameScript
                 }
                 if (success)
                 {
-                    ActionOnReadSuccess?.Invoke();
+                    ActionOnGetSuccess?.Invoke();
                     return true;
                 }
                 else
                 {
                     SetDefaults();
-                    ActionOnReadFail?.Invoke();
+                    ActionOnGetFail?.Invoke();
                     return false;
                 }
             }
@@ -171,10 +171,10 @@ namespace IngameScript
             /// <param name="fieldDefaultValues"><para>The default values of this field.</para><para>This value can not be null!</para></param>
             /// <param name="separator">The separator used to separate the entity ID and the priority.</param>
             /// <param name="delimiter">The delimeter used to separate the string equivalents of the values in the list.</param>
-            /// <param name="actionOnReadFail">This action will be called when the reading of this field fails.</param>
-            /// <param name="actionOnReadSuccess">This action will be called when the reading of this field succeeds.</param>
-            public ShipControllerCollectionField(string fieldSection, string fieldName, string fieldComment, List<ShipControllerWithPriority> fieldValues, List<ShipControllerWithPriority> fieldDefaultValues, string separator=",", string delimiter=";", Action actionOnReadFail=null, Action actionOnReadSuccess=null)
-                : base(fieldSection, fieldName, fieldComment, delimiter, actionOnReadFail, actionOnReadSuccess)
+            /// <param name="actionOnGetFail">This action will be called when the reading of this field fails.</param>
+            /// <param name="actionOnGetSuccess">This action will be called when the reading of this field succeeds.</param>
+            public ShipControllerCollectionField(string fieldSection, string fieldName, string fieldComment, List<ShipControllerWithPriority> fieldValues, List<ShipControllerWithPriority> fieldDefaultValues, string separator=",", string delimiter=";", Action actionOnGetFail=null, Action actionOnGetSuccess=null)
+                : base(fieldSection, fieldName, fieldComment, delimiter, actionOnGetFail, actionOnGetSuccess)
             {
                 FieldValues = fieldValues;
                 FieldDefaultValues = fieldDefaultValues;

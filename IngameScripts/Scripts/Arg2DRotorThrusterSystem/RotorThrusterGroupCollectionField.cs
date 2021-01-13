@@ -232,13 +232,13 @@ namespace IngameScript
 
                 if (success)
                 {
-                    ActionOnReadSuccess?.Invoke();
+                    ActionOnGetSuccess?.Invoke();
                     return true;
                 }
                 else
                 {
                     SetDefaults();
-                    ActionOnReadFail?.Invoke();
+                    ActionOnGetFail?.Invoke();
                     return false;
                 }
             }
@@ -254,10 +254,10 @@ namespace IngameScript
             /// <param name="propertyDelimiter">The delimiter used to separate items of list properties.</param>
             /// <param name="separator">The separator used to separate the property values of <see cref="Arg2DRotorThrusterMechanism.RotorThrusterGroup"/> from each other.</param>
             /// <param name="delimiter">The delimeter used to separate the string equivalents of the values in the list.</param>
-            /// <param name="actionOnReadFail">This action will be called when the reading of this field fails.</param>
-            /// <param name="actionOnReadSuccess">This action will be called when the reading of this field succeeds.</param>
-            public RotorThrusterGroupCollectionField(string fieldSection, string fieldName, string fieldComment, List<Arg2DRotorThrusterMechanism.RotorThrusterGroup> fieldValues, List<Arg2DRotorThrusterMechanism.RotorThrusterGroup> fieldDefaultValues, string propertyDelimiter=":" ,string separator = ",", string delimiter = ";", Action actionOnReadFail = null, Action actionOnReadSuccess = null)
-                : base(fieldSection, fieldName, fieldComment, delimiter, actionOnReadFail, actionOnReadSuccess)
+            /// <param name="actionOnGetFail">This action will be called when the reading of this field fails.</param>
+            /// <param name="actionOnGetSuccess">This action will be called when the reading of this field succeeds.</param>
+            public RotorThrusterGroupCollectionField(string fieldSection, string fieldName, string fieldComment, List<Arg2DRotorThrusterMechanism.RotorThrusterGroup> fieldValues, List<Arg2DRotorThrusterMechanism.RotorThrusterGroup> fieldDefaultValues, string propertyDelimiter=":" ,string separator = ",", string delimiter = ";", Action actionOnGetFail = null, Action actionOnGetSuccess = null)
+                : base(fieldSection, fieldName, fieldComment, delimiter, actionOnGetFail, actionOnGetSuccess)
             {
                 FieldValues = fieldValues;
                 FieldDefaultValues = fieldDefaultValues;
