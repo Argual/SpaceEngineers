@@ -154,11 +154,11 @@ namespace IngameScript
                     CommandAction = commandAction;
                     if (arguments!=null)
                     {
-                        Arguments.AddRange(arguments);
+                        Arguments = new List<string>(arguments);
                     }
                     if (switches != null)
                     {
-                        Switches.AddRange(switches);
+                        Switches = new List<string>(switches);
                     }
                 }
             }
@@ -373,7 +373,7 @@ namespace IngameScript
                 if (string.IsNullOrWhiteSpace(commandName))
                 {
                     msg = "List of available commands:\n";
-                    foreach (var cmd in commands)
+                    foreach (var cmd in commands.OrderBy(c=>c.CommandName))
                     {
                         listedCommandCount++;
                         msg += $"\n{cmd.CommandName}";

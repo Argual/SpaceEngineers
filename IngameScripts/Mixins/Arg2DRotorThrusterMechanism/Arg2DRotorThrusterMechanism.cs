@@ -220,7 +220,7 @@ namespace IngameScript
                 /// <param name="rotorThrusterGroup">The rotor thruster group with the thrusters to override.</param>
                 /// <param name="powerOverridePercentage">The value (at or between 0 and 1) the thrusters should be overridden with.</param>
                 /// <param name="rotateToDefaultOnZero">If set to true, the rotor will be rotated to the default angle when the override percentage is 0.</param>
-                public static void OverrideRotorThrusterGroupThrusters(RotorThrusterGroup rotorThrusterGroup, float powerOverridePercentage, bool rotateToDefaultOnZero = false)
+                public static void OverrideRotorThrusterGroupThrusters(RotorThrusterGroup rotorThrusterGroup, float powerOverridePercentage, bool shareInertiaTensor, bool rotateToDefaultOnZero = false)
                 {
                     if (powerOverridePercentage < 0)
                     {
@@ -238,7 +238,7 @@ namespace IngameScript
 
                     if (powerOverridePercentage == 0 && rotateToDefaultOnZero)
                     {
-                        rotorThrusterGroup.Stator.RotateToAngle(rotorThrusterGroup.DefaultAngle);
+                        rotorThrusterGroup.Stator.RotateToAngle(shareInertiaTensor,rotorThrusterGroup.DefaultAngle);
                     }
                 }
 
@@ -296,11 +296,11 @@ namespace IngameScript
                 /// <param name="powerOverridePercentage">The value (at or between 0 and 1) the thrusters should be overridden with.</param>
                 /// <param name="rotateToDefaultOnZero">If set to true, the rotor will be rotated to the default angle when the override percentage is 0.</param>
                 /// <param name="shareInertiaTensors">Whether or not to share inertia tensors between rotations.</param>
-                public void OverrideAllThrusters(float powerOverridePercentage, bool rotateToDefaultOnZero = false, bool shareInertiaTensors=false)
+                public void OverrideAllThrusters(float powerOverridePercentage, bool rotateToDefaultOnZero, bool shareInertiaTensors)
                 {
                     foreach (var RTG in rotorThrusterGroups)
                     {
-                        OverrideRotorThrusterGroupThrusters(RTG, powerOverridePercentage);
+                        OverrideRotorThrusterGroupThrusters(RTG, powerOverridePercentage, shareInertiaTensors);
                         if (powerOverridePercentage == 0 && rotateToDefaultOnZero)
                         {
                             RTG.Stator.RotateToAngle(shareInertiaTensors, RTG.DefaultAngle);
@@ -321,7 +321,7 @@ namespace IngameScript
 
                     if (movementIndicator == Vector3.Zero)
                     {
-                        OverrideAllThrusters(0, rotateToDefaultWhenUnused);
+                        OverrideAllThrusters(0, rotateToDefaultWhenUnused, shareInertiaTensor);
                         return;
                     }
 
@@ -331,20 +331,13 @@ namespace IngameScript
                         Base6Directions.Direction targetDirection = Base6Directions.GetDirection(movementIndicator);
                         if (Base6Directions.GetAxis(targetDirection) == Axis)
                         {
-                            OverrideAllThrusters(0, rotateToDefaultWhenUnused);
+                            OverrideAllThrusters(0, rotateToDefaultWhenUnused, shareInertiaTensor);
                             return;
                         }
                         targetAngle = dirToAngleDict[targetDirection];
                         foreach (var RTG in rotorThrusterGroups)
                         {
-                            if (shareInertiaTensor)
-                            {
-                                RTG.Stator.RotateToAngle(true, targetAngle, false);
-                            }
-                            else
-                            {
-                                RTG.Stator.RotateToAngle(false, targetAngle, false);
-                            }
+                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false);
                         }
                     }
                     else
@@ -352,7 +345,7 @@ namespace IngameScript
                         Base6Directions.Direction d1, d2;
                         if (!GetNeighbouringDirections(movementIndicator, out d1, out d2))
                         {
-                            OverrideAllThrusters(0, rotateToDefaultWhenUnused);
+                            OverrideAllThrusters(0, rotateToDefaultWhenUnused, shareInertiaTensor);
                             return;
                         }
                         int angle1 = dirToAngleDict[d1];
@@ -382,14 +375,7 @@ namespace IngameScript
 
                         foreach (var RTG in rotorThrusterGroups)
                         {
-                            if (shareInertiaTensor)
-                            {
-                                RTG.Stator.RotateToAngle(true, targetAngle, false);
-                            }
-                            else
-                            {
-                                RTG.Stator.RotateToAngle(false, targetAngle, false);
-                            }
+                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false);
                         }
                     }
 
@@ -419,7 +405,7 @@ namespace IngameScript
 
                     if (Vector3.IsZero(movementIndicator))
                     {
-                        OverrideAllThrusters(0, rotateToDefaultWhenUnused);
+                        OverrideAllThrusters(0, rotateToDefaultWhenUnused, shareInertiaTensor);
                         return;
                     }
 
@@ -429,20 +415,13 @@ namespace IngameScript
                         Base6Directions.Direction targetDirection = Base6Directions.GetDirection(movementIndicator);
                         if (Base6Directions.GetAxis(targetDirection) == Axis)
                         {
-                            OverrideAllThrusters(0, rotateToDefaultWhenUnused);
+                            OverrideAllThrusters(0, rotateToDefaultWhenUnused, shareInertiaTensor);
                             return;
                         }
                         targetAngle = dirToAngleDict[targetDirection];
                         foreach (var RTG in rotorThrusterGroups)
                         {
-                            if (shareInertiaTensor)
-                            {
-                                RTG.Stator.RotateToAngle(true, targetAngle, false);
-                            }
-                            else
-                            {
-                                RTG.Stator.RotateToAngle(false, targetAngle, false);
-                            }
+                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false);
                         }
                     }
                     else
@@ -451,7 +430,7 @@ namespace IngameScript
 
                         if (!GetNeighbouringDirections(movementIndicator, out d1, out d2))
                         {
-                            OverrideAllThrusters(0, rotateToDefaultWhenUnused);
+                            OverrideAllThrusters(0, rotateToDefaultWhenUnused, shareInertiaTensor);
                             return;
                         }
 
@@ -519,14 +498,7 @@ namespace IngameScript
 
                         foreach (var RTG in rotorThrusterGroups)
                         {
-                            if (shareInertiaTensor)
-                            {
-                                RTG.Stator.RotateToAngle(true, targetAngle, false);
-                            }
-                            else
-                            {
-                                RTG.Stator.RotateToAngle(false, targetAngle, false);
-                            }
+                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false);
                         }
                     }
 

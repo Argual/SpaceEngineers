@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{032FD129-B0B5-4564-8AD6-8A09A3D6FAAC}</ProjectGuid>
+    <ProjectGuid>{CFF300B0-B335-4603-AAA1-299A968DF167}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>IngameScript</RootNamespace>
     <AssemblyName>Arg2DRotorThrusterSystem</AssemblyName>
@@ -52,11 +52,11 @@
     <Compile Include="RotorThrusterGroupCollectionField.cs" />
     <Compile Include="ShipControllerCollectionField.cs" />
   </ItemGroup>
-  <Import Project="..\..\Mixins\ArgPersistenceSystem\ArgPersistenceSystem.projitems" Label="Shared" />
-  <Import Project="..\..\Mixins\Arg2DRotorThrusterMechanism\Arg2DRotorThrusterMechanism.projitems" Label="Shared" />
-  <Import Project="..\..\Mixins\ArgCommandParser\ArgCommandParser.projitems" Label="Shared" />
-  <Import Project="..\..\Mixins\ArgRotorExtensions\ArgRotorExtensions.projitems" Label="Shared" />
   <Import Project="..\..\Mixins\ArgShipControllerExtensions\ArgShipControllerExtensions.projitems" Label="Shared" />
+  <Import Project="..\..\Mixins\ArgRotorExtensions\ArgRotorExtensions.projitems" Label="Shared" />
+  <Import Project="..\..\Mixins\ArgPersistenceSystem\ArgPersistenceSystem.projitems" Label="Shared" />
+  <Import Project="..\..\Mixins\ArgCommandParser\ArgCommandParser.projitems" Label="Shared" />
+  <Import Project="..\..\Mixins\Arg2DRotorThrusterMechanism\Arg2DRotorThrusterMechanism.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
     <Copy SourceFiles="MDK\MDK.options.props" DestinationFolder="$(TargetDir)\MDK" />

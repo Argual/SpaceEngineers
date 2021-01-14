@@ -29,8 +29,8 @@ namespace IngameScript
         const string C_BlockConfig_TemplateRequest_Section = C_Arg2DRotorThrusterSystem_Section + "Template";
 
         const string C_RotorThrusterGroups_Section = "RotorThrusterGroups";
-        const string C_RotorThrusterGroup_Name = "RotorThrusterGroup";
-        const string C_RotorThrusterGroup_Comment = "A rotor and the thrusters it rotates grouped together with information about default angle and heading directions.";
+        const string C_RotorThrusterGroups_Name = "RotorThrusterGroups";
+        const string C_RotorThrusterGroups_Comment = "Rotors and the thrusters they are rotating grouped together with other relevant values.";
 
         const string C_TextPanels_Section = C_GeneralBlocks_Section;
         const string C_TextPanels_Name = "TextPanels";
@@ -117,6 +117,12 @@ namespace IngameScript
         const string C_Cmd_Start = "Start";
 
         const string C_Cmd_ConfigureFromCustomData = "ConfigureFromCustomData";
+
+        const string C_Cmd_AddTemplates = "AddTemplates";
+        const string C_Cmd_AddTemplates_SwitchOverwriteExistingKeys = "OverwriteExistingKeys";
+        const string C_Cmd_AddTemplates_SwitchOverwriteIfInvalid = "OverwriteIfInvalid";
+
+        const string C_Cmd_GetBlocks = "GetBlocks";
 
         #endregion
 
@@ -264,6 +270,7 @@ namespace IngameScript
             if (string.IsNullOrWhiteSpace(block.CustomData) || (!parseSuccess && overwriteIfInvalid))
             {
                 block.CustomData = templateIni.ToString();
+                Log($"Set template on '{block.CustomName}'.");
             }
             else if (parseSuccess)
             {
@@ -309,6 +316,11 @@ namespace IngameScript
                 }
                 reusableIni.DeleteSection(C_BlockConfig_TemplateRequest_Section);
                 block.CustomData = reusableIni.ToString();
+                Log($"Added template to '{block.CustomName}'.");
+            }
+            else
+            {
+                Log($"Could not add template to '{block.CustomName}'.");
             }
         }
 
@@ -449,7 +461,10 @@ namespace IngameScript
             {
                 runUpdateFrequency = new ArgPersistenceSystem.Fields.GenericValueField<UpdateFrequency>(C_RunUpdateFrequency_Section,
                     C_RunUpdateFrequency_Name, C_RunUpdateFrequency_Comment, UpdateFrequency.Update10, UpdateFrequency.Update10,
-                    Enum.TryParse, u => u.ToString("F"), actionOnGetFail: () => SetDefaultsOnFail(runUpdateFrequency));
+                    Enum.TryParse, u => u.ToString("F"), actionOnGetFail: () => SetDefaultsOnFail(runUpdateFrequency),
+                    actionOnGetSuccess: () => {
+                        Runtime.UpdateFrequency = runUpdateFrequency.FieldValue;
+                    });
             }
             else
             {
@@ -460,11 +475,21 @@ namespace IngameScript
             if (rotorThrusterGroups == null)
             {
                 rotorThrusterGroups = new RotorThrusterGroupCollectionField(C_RotorThrusterGroups_Section,
-                    C_RotorThrusterGroup_Name, C_RotorThrusterGroup_Comment,
+                    C_RotorThrusterGroups_Name, C_RotorThrusterGroups_Comment,
                     new List<Arg2DRotorThrusterMechanism.RotorThrusterGroup>(), new List<Arg2DRotorThrusterMechanism.RotorThrusterGroup>(),
                     actionOnGetFail: ()=> {
                         Log($"Pulling '{rotorThrusterGroups.Key}' failed.");
                         GetRotorThrusterGroupsFromGrid();
+                    },
+                    actionOnGetSuccess: ()=> {
+                        if (mechanism!=null)
+                        {
+                            mechanism.ClearRotorThrusterGroups();
+                            foreach (var rtg in rotorThrusterGroups.FieldValues)
+                            {
+                                mechanism.AddRotorThrusterGroup(rtg);
+                            }
+                        }
                     });
             }
             else
@@ -481,7 +506,7 @@ namespace IngameScript
                     actionOnGetFail: ()=>
                     {
                         Log($"Pulling '{shipControllers.Key}' failed.");
-                        GetControllersFromGrid();
+                        GetShipControllersFromGrid();
                     });
                 shipControllers.PullPriority = 1;
             }
@@ -526,7 +551,13 @@ namespace IngameScript
             {
                 thrustStrengthMultiplier = new ArgPersistenceSystem.Fields.SingleField(C_ThrustStrengthMultiplier_Section,
                     C_ThrustStrengthMultiplier_Name, C_ThrustStrengthMultiplier_Comment, 1, 1,
-                    actionOnGetFail: () => SetDefaultsOnFail(thrustStrengthMultiplier));
+                    actionOnGetFail: () => SetDefaultsOnFail(thrustStrengthMultiplier),
+                    actionOnGetSuccess: () => {
+                        if (mechanism!=null)
+                        {
+                            mechanism.ThrustStrengthMultiplier = thrustStrengthMultiplier.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -538,7 +569,13 @@ namespace IngameScript
             {
                 thrustStrengthMin = new ArgPersistenceSystem.Fields.SingleField(C_ThrustStrengthMin_Section,
                     C_ThrustStrengthMin_Name, C_ThrustStrengthMin_Comment, 0.1f, 0.1f,
-                    actionOnGetFail: () => SetDefaultsOnFail(thrustStrengthMin));
+                    actionOnGetFail: () => SetDefaultsOnFail(thrustStrengthMin),
+                    actionOnGetSuccess: () => {
+                        if (mechanism != null)
+                        {
+                            mechanism.ThrustStrengthMin = thrustStrengthMin.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -550,7 +587,13 @@ namespace IngameScript
             {
                 proportionalVelocityThreshold = new ArgPersistenceSystem.Fields.SingleField(C_ProportionalVelocityThreshold_Section,
                     C_ProportionalVelocityThreshold_Name, C_ProportionalVelocityThreshold_Comment, 0, 0,
-                    actionOnGetFail: () => SetDefaultsOnFail(proportionalVelocityThreshold));
+                    actionOnGetFail: () => SetDefaultsOnFail(proportionalVelocityThreshold),
+                    actionOnGetSuccess: () => {
+                        if (mechanism != null)
+                        {
+                            mechanism.ProportionalVelocityThreshold = proportionalVelocityThreshold.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -562,7 +605,13 @@ namespace IngameScript
             {
                 dampenerActivationVelocityThreshold = new ArgPersistenceSystem.Fields.SingleField(C_DampenerActivationVelocityThreshold_Section,
                     C_DampenerActivationVelocityThreshold_Name, C_DampenerActivationVelocityThreshold_Comment, 5, 5,
-                    actionOnGetFail: () => SetDefaultsOnFail(dampenerActivationVelocityThreshold));
+                    actionOnGetFail: () => SetDefaultsOnFail(dampenerActivationVelocityThreshold),
+                    actionOnGetSuccess: () => {
+                        if (mechanism != null)
+                        {
+                            mechanism.DampenerActivationVelocityThreshold = dampenerActivationVelocityThreshold.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -574,7 +623,13 @@ namespace IngameScript
             {
                 shareInertiaTensor = new ArgPersistenceSystem.Fields.BooleanField(C_ShareInertiaTensor_Section,
                     C_ShareInertiaTensor_Name, C_ShareInertiaTensor_Comment, false, false,
-                    actionOnGetFail: () => SetDefaultsOnFail(shareInertiaTensor));
+                    actionOnGetFail: () => SetDefaultsOnFail(shareInertiaTensor),
+                    actionOnGetSuccess: () => {
+                        if (mechanism != null)
+                        {
+                            mechanism.ShareInertiaTensor = shareInertiaTensor.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -586,7 +641,13 @@ namespace IngameScript
             {
                 forceDisableDampeners = new ArgPersistenceSystem.Fields.BooleanField(C_ForceDisableDampeners_Section,
                     C_ForceDisableDampeners_Name, C_ForceDisableDampeners_Comment, false, false,
-                    actionOnGetFail: () => SetDefaultsOnFail(forceDisableDampeners));
+                    actionOnGetFail: () => SetDefaultsOnFail(forceDisableDampeners),
+                    actionOnGetSuccess: () => {
+                        if (mechanism != null)
+                        {
+                            mechanism.ForceDisableDampeners = forceDisableDampeners.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -598,7 +659,13 @@ namespace IngameScript
             {
                 forceEnableDampeners = new ArgPersistenceSystem.Fields.BooleanField(C_ForceEnableDampeners_Section,
                     C_ForceEnableDampeners_Name, C_ForceEnableDampeners_Comment, false, false,
-                    actionOnGetFail: () => SetDefaultsOnFail(forceEnableDampeners));
+                    actionOnGetFail: () => SetDefaultsOnFail(forceEnableDampeners),
+                    actionOnGetSuccess: () => {
+                        if (mechanism != null)
+                        {
+                            mechanism.ForceEnableDampeners = forceEnableDampeners.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -610,7 +677,13 @@ namespace IngameScript
             {
                 rotateToDefaultWhenUnused = new ArgPersistenceSystem.Fields.BooleanField(C_RotateToDefaultWhenUnused_Section,
                     C_RotateToDefaultWhenUnused_Name, C_RotateToDefaultWhenUnused_Comment, false, false,
-                    actionOnGetFail: () => SetDefaultsOnFail(rotateToDefaultWhenUnused));
+                    actionOnGetFail: () => SetDefaultsOnFail(rotateToDefaultWhenUnused),
+                    actionOnGetSuccess: () => {
+                        if (mechanism != null)
+                        {
+                            mechanism.RotateToDefaultWhenUnused = rotateToDefaultWhenUnused.FieldValue;
+                        }
+                    });
             }
             else
             {
@@ -700,6 +773,8 @@ namespace IngameScript
 
             commandParser.AddCommand(new ArgCommandParser.Command(C_Cmd_Start, CmdStart));
             commandParser.AddCommand(new ArgCommandParser.Command(C_Cmd_Reset, CmdReset));
+            commandParser.AddCommand(new ArgCommandParser.Command(C_Cmd_AddTemplates, CmdAddTemplates, null, new string[] { C_Cmd_AddTemplates_SwitchOverwriteExistingKeys, C_Cmd_AddTemplates_SwitchOverwriteIfInvalid }));
+            commandParser.AddCommand(new ArgCommandParser.Command(C_Cmd_GetBlocks, CmdGetBlocks));
             commandParser.AddCommand(new ArgCommandParser.Command(C_Cmd_ConfigureFromCustomData, CmdConfigureFromCustomData));
             commandParser.AddCommand(new ArgCommandParser.Command(C_Cmd_Set, CmdSet, new string[] { C_Cmd_Set_Arg1, C_Cmd_Set_Arg2 }));
         }
@@ -719,6 +794,7 @@ namespace IngameScript
             persistenceSystem.Push();
             configurationSystem.Commit();
             configurationSystem.Push();
+            ResetMechanism();
             Log("System reset.");
         }
 
@@ -895,10 +971,40 @@ namespace IngameScript
         {
             e = null;
             Exception ee;
-            if (!configurationSystem.Pull(out ee))
-            {
-                e = new ArgCommandParser.CommandInvalidArgumentsException(ee.Message);
-            }
+            Log("Configuring from custom data...");
+            configurationSystem.Pull(out ee);
+            configurationSystem.Commit();
+            configurationSystem.Push();
+            Log("Configured from custom data.");
+        }
+
+        void CmdGetBlocks(MyCommandLine commandLine, out ArgCommandParser.CommandInvalidArgumentsException e)
+        {
+            e = null;
+            Log("Getting blocks from grid...");
+
+            GetTextPanelsFromGrid();
+            persistenceSystem.CommitField(textPanels);
+            Log($"Found {textPanels.FieldValues.Count} text panels.");
+
+            GetShipControllersFromGrid();
+            persistenceSystem.CommitField(shipControllers);
+            Log($"Found {shipControllers.FieldValues.Count} ship controllers.");
+
+            GetRotorThrusterGroupsFromGrid();
+            persistenceSystem.CommitField(rotorThrusterGroups);
+            Log($"Found {rotorThrusterGroups.FieldValues.Count} rotor thruster groups.");
+
+            ResetMechanism();
+
+            Log("Blocks retrieved.");
+        }
+
+        void CmdAddTemplates(MyCommandLine commandLine, out ArgCommandParser.CommandInvalidArgumentsException e)
+        {
+            e = null;
+            Log($"Adding templates to blocks with '{C_BlockConfig_TemplateRequest_Section}' section in their custom data...");
+            AddTemplatesWhereRequested(commandLine.Switch(C_Cmd_AddTemplates_SwitchOverwriteExistingKeys), commandLine.Switch(C_Cmd_AddTemplates_SwitchOverwriteIfInvalid));
         }
 
         #endregion
@@ -921,6 +1027,7 @@ namespace IngameScript
                 configurationSystem.Commit();
                 configurationSystem.Push();
             }
+            ResetMechanism();
             Runtime.UpdateFrequency |= runUpdateFrequency.FieldValue;
         }
 
@@ -944,10 +1051,37 @@ namespace IngameScript
             if (string.IsNullOrWhiteSpace(systemID.FieldValue))
             {
                 // Stop if the system has no valid ID.
-                Runtime.UpdateFrequency &= ~UpdateFrequency.None;
+                Runtime.UpdateFrequency &= ~runUpdateFrequency.FieldValue;
                 Log($"Invalid {C_SystemID_Name} detected: '{systemID.FieldValue}'! Shutting down system...");
                 return;
             }
+
+            if (shipControllers.FieldValues.Count <=0)
+            {
+                Runtime.UpdateFrequency &= ~runUpdateFrequency.FieldValue;
+                Log($"There are no ship controllers present in the system! Shutting down system...");
+                return;
+            }
+
+            // Select highest priority ship controller with movement indicator
+            var shipControllersWithIndicators = shipControllers.FieldValues.Where(c => !Vector3.IsZero(c.ShipController.MoveIndicator));
+            IMyShipController shipController = null;
+            if (shipControllersWithIndicators.Count()>0)
+            {
+                shipController = shipControllersWithIndicators.MaxBy(c => c.Priority).ShipController;
+            }
+            if (shipController==null)
+            {
+                if (lastUsedShipController.FieldValue==null)
+                {
+                    lastUsedShipController.FieldValue = shipControllers.FieldValues.MaxBy(c => c.Priority).ShipController;
+                }
+            }
+            else
+            {
+                lastUsedShipController.FieldValue = shipController;
+            }
+            mechanism.Thrust(lastUsedShipController.FieldValue);
         }
 
         void Initialize()
@@ -957,6 +1091,29 @@ namespace IngameScript
             InitializeCommands();
             InitializePersistence();
             InitializeConfiguration();
+        }
+
+        void ResetMechanism()
+        {
+            if (mechanism==null)
+            {
+                mechanism = new Arg2DRotorThrusterMechanism(rotorThrusterGroups.FieldValues, dampenerActivationVelocityThreshold.FieldValue, proportionalVelocityThreshold.FieldValue, thrustStrengthMin.FieldValue, thrustStrengthMultiplier.FieldValue, rotateToDefaultWhenUnused.FieldValue, shareInertiaTensor.FieldValue);
+            }
+            else
+            {
+                mechanism.ClearRotorThrusterGroups();
+                mechanism.DampenerActivationVelocityThreshold = dampenerActivationVelocityThreshold.FieldValue;
+                mechanism.ProportionalVelocityThreshold = proportionalVelocityThreshold.FieldValue;
+                mechanism.ThrustStrengthMin = thrustStrengthMin.FieldValue;
+                mechanism.ThrustStrengthMultiplier = thrustStrengthMultiplier.FieldValue;
+                mechanism.RotateToDefaultWhenUnused = rotateToDefaultWhenUnused.FieldValue;
+                mechanism.ShareInertiaTensor = shareInertiaTensor.FieldValue;
+                foreach (var rtg in rotorThrusterGroups.FieldValues)
+                {
+                    mechanism.AddRotorThrusterGroup(rtg);
+                }
+            }
+            
         }
 
         void Log(string message)
@@ -1062,7 +1219,7 @@ namespace IngameScript
             });
         }
 
-        void GetControllersFromGrid()
+        void GetShipControllersFromGrid()
         {
             GetBlocksOfTypeWithSameSystemIDFromGrid(reusableShipControllers);
             shipControllers.SetDefaults();
@@ -1086,6 +1243,7 @@ namespace IngameScript
         {
             GetBlocksOfTypeWithSameSystemIDFromGrid(reusableThrusters);
             GetBlocksOfTypeWithSameSystemIDFromGrid(reusableRotors);
+            rotorThrusterGroups.SetDefaults();
 
             string rotorID;
             string s;

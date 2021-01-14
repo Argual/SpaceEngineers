@@ -23,25 +23,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgDrillMechanismController
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DrillMechanism", "DrillMechanism", "{4AA2548B-6309-4201-B668-28D042F20148}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2DRotorThrusterSystem", "2DRotorThrusterSystem", "{7FF5F5D8-F6AD-4C95-A054-3CFBAD9EC558}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arg2DRotorThrusterSystem", "..\Scripts\Arg2DRotorThrusterSystem\Arg2DRotorThrusterSystem.csproj", "{032FD129-B0B5-4564-8AD6-8A09A3D6FAAC}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ArgCommandParser", "..\Mixins\ArgCommandParser\ArgCommandParser.shproj", "{D6E0CA72-B0A0-4A7B-99BB-FAF68275625B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arg2DRotorThrusterSystem", "..\Scripts\Arg2DRotorThrusterSystem\Arg2DRotorThrusterSystem.csproj", "{CFF300B0-B335-4603-AAA1-299A968DF167}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\Mixins\Arg2DRotorThrusterMechanism\Arg2DRotorThrusterMechanism.projitems*{032fd129-b0b5-4564-8ad6-8a09a3d6faac}*SharedItemsImports = 4
-		..\Mixins\ArgCommandParser\ArgCommandParser.projitems*{032fd129-b0b5-4564-8ad6-8a09a3d6faac}*SharedItemsImports = 4
-		..\Mixins\ArgPersistenceSystem\ArgPersistenceSystem.projitems*{032fd129-b0b5-4564-8ad6-8a09a3d6faac}*SharedItemsImports = 4
-		..\Mixins\ArgRotorExtensions\ArgRotorExtensions.projitems*{032fd129-b0b5-4564-8ad6-8a09a3d6faac}*SharedItemsImports = 4
-		..\Mixins\ArgShipControllerExtensions\ArgShipControllerExtensions.projitems*{032fd129-b0b5-4564-8ad6-8a09a3d6faac}*SharedItemsImports = 4
 		..\Mixins\ArgDrillMechanism\ArgDrillMechanism.projitems*{0ffeceea-fd84-4290-acb1-ae1e37f8c112}*SharedItemsImports = 4
 		..\Mixins\ArgExhaustBlock\ArgExhaustBlock.projitems*{21957ee1-b3d4-4350-9ed3-a2ed29e472c3}*SharedItemsImports = 13
 		..\Mixins\ArgRotorExtensions\ArgRotorExtensions.projitems*{61eba249-19f3-48b6-a25b-a4cee90168ba}*SharedItemsImports = 13
 		..\Mixins\Arg2DRotorThrusterMechanism\Arg2DRotorThrusterMechanism.projitems*{8f5c2046-c110-4e2e-a0d0-1dbfd673b2b3}*SharedItemsImports = 13
 		..\Mixins\ArgShipControllerExtensions\ArgShipControllerExtensions.projitems*{9a0248a6-cf54-4ec2-9acc-deffe20675cb}*SharedItemsImports = 13
 		..\Mixins\ArgDrillMechanism\ArgDrillMechanism.projitems*{c55fe599-1ec1-4608-a3ed-2ead043249b5}*SharedItemsImports = 13
+		..\Mixins\Arg2DRotorThrusterMechanism\Arg2DRotorThrusterMechanism.projitems*{cff300b0-b335-4603-aaa1-299a968df167}*SharedItemsImports = 4
+		..\Mixins\ArgCommandParser\ArgCommandParser.projitems*{cff300b0-b335-4603-aaa1-299a968df167}*SharedItemsImports = 4
+		..\Mixins\ArgPersistenceSystem\ArgPersistenceSystem.projitems*{cff300b0-b335-4603-aaa1-299a968df167}*SharedItemsImports = 4
+		..\Mixins\ArgRotorExtensions\ArgRotorExtensions.projitems*{cff300b0-b335-4603-aaa1-299a968df167}*SharedItemsImports = 4
+		..\Mixins\ArgShipControllerExtensions\ArgShipControllerExtensions.projitems*{cff300b0-b335-4603-aaa1-299a968df167}*SharedItemsImports = 4
 		..\Mixins\ArgCommandParser\ArgCommandParser.projitems*{d6e0ca72-b0a0-4a7b-99bb-faf68275625b}*SharedItemsImports = 13
 		..\Mixins\ArgPersistenceSystem\ArgPersistenceSystem.projitems*{e32d0c28-e4b0-40f4-bb3e-6f44117d9182}*SharedItemsImports = 13
 	EndGlobalSection
@@ -51,8 +49,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0FFECEEA-FD84-4290-ACB1-AE1E37F8C112}.Debug|x64.ActiveCfg = Debug|x64
 		{0FFECEEA-FD84-4290-ACB1-AE1E37F8C112}.Debug|x64.Build.0 = Debug|x64
-		{032FD129-B0B5-4564-8AD6-8A09A3D6FAAC}.Debug|x64.ActiveCfg = Debug|x64
-		{032FD129-B0B5-4564-8AD6-8A09A3D6FAAC}.Debug|x64.Build.0 = Debug|x64
+		{CFF300B0-B335-4603-AAA1-299A968DF167}.Debug|x64.ActiveCfg = Debug|x64
+		{CFF300B0-B335-4603-AAA1-299A968DF167}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,9 +64,8 @@ Global
 		{E32D0C28-E4B0-40F4-BB3E-6F44117D9182} = {A429FF82-DD3B-44C8-A869-6B742C70AA84}
 		{0FFECEEA-FD84-4290-ACB1-AE1E37F8C112} = {4AA2548B-6309-4201-B668-28D042F20148}
 		{4AA2548B-6309-4201-B668-28D042F20148} = {C11734A0-377E-4A71-BD8C-5A2C32790CEA}
-		{7FF5F5D8-F6AD-4C95-A054-3CFBAD9EC558} = {C11734A0-377E-4A71-BD8C-5A2C32790CEA}
-		{032FD129-B0B5-4564-8AD6-8A09A3D6FAAC} = {7FF5F5D8-F6AD-4C95-A054-3CFBAD9EC558}
 		{D6E0CA72-B0A0-4A7B-99BB-FAF68275625B} = {A429FF82-DD3B-44C8-A869-6B742C70AA84}
+		{CFF300B0-B335-4603-AAA1-299A968DF167} = {C11734A0-377E-4A71-BD8C-5A2C32790CEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DCE6FB0D-4B64-4029-B550-245D48A3D8E7}

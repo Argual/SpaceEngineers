@@ -90,6 +90,13 @@ namespace IngameScript
         /// </remarks>
         public static bool RotateToAngle(this IMyMotorStator stator, bool shareTensor, float targetAngle, bool lockRotorOnTarget = true, float tolerance = 1f)
         {
+            if (AreAnglesEqual(targetAngle, stator.Angle*180/(float)Math.PI, tolerance))
+            {
+                stator.RotorLock |= lockRotorOnTarget;
+                stator.SetValueBool("ShareInertiaTensor", shareTensor);
+                return true;
+            }
+
             bool tensorShared = stator.GetValueBool("ShareInertiaTensor");
             if (tensorShared)
             {

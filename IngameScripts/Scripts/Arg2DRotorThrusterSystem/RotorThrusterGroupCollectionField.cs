@@ -200,7 +200,7 @@ namespace IngameScript
                 }
                 for (int i = 1; i < FieldValues.Count; i++)
                 {
-                    v += $"{Delimiter}{FieldValues[i]}";
+                    v += $"{Delimiter}{RTGToString(FieldValues[i])}";
                 }
                 ini.Set(Key, v);
                 if (setComment)
