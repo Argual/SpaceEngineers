@@ -421,7 +421,7 @@ namespace IngameScript
                         targetAngle = dirToAngleDict[targetDirection];
                         foreach (var RTG in rotorThrusterGroups)
                         {
-                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false);
+                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false, 1f,10f);
                         }
                     }
                     else

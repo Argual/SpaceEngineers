@@ -1121,7 +1121,7 @@ namespace IngameScript
             Echo(message.TrimEnd('\n'));
             foreach (var tp in textPanels.FieldValues)
             {
-                tp.WriteText(message, true);
+                tp.WriteText(message+"\n", true);
             }
         }
 
