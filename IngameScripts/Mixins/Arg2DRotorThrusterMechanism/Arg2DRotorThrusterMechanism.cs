@@ -413,6 +413,7 @@ namespace IngameScript
                     if (IsBase6Direction(movementIndicator))
                     {
                         Base6Directions.Direction targetDirection = Base6Directions.GetDirection(movementIndicator);
+
                         if (Base6Directions.GetAxis(targetDirection) == Axis)
                         {
                             OverrideAllThrusters(0, rotateToDefaultWhenUnused, shareInertiaTensor);
@@ -421,7 +422,7 @@ namespace IngameScript
                         targetAngle = dirToAngleDict[targetDirection];
                         foreach (var RTG in rotorThrusterGroups)
                         {
-                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false, 1f,10f);
+                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false, 5f,15f);
                         }
                     }
                     else
@@ -498,7 +499,7 @@ namespace IngameScript
 
                         foreach (var RTG in rotorThrusterGroups)
                         {
-                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false);
+                            RTG.Stator.RotateToAngle(shareInertiaTensor, targetAngle, false, 5f, 15f);
                         }
                     }
 

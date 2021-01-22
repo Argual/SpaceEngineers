@@ -19,6 +19,7 @@ using VRageMath;
 
 namespace IngameScript
 {
+
     partial class Program : MyGridProgram
     {
         #region Constants
@@ -1017,6 +1018,7 @@ namespace IngameScript
 
         public Program()
         {
+
             Initialize();
             if (!string.IsNullOrWhiteSpace(Storage))
             {
